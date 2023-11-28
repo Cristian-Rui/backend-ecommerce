@@ -22,10 +22,15 @@ const fechaActual = DateTime.now().toLocaleString(DateTime.DATETIME_MED);
 
 //ESTO ES CON ASYNC/AWAIT
 const escribirYLeerArchivo = async () => {
-    await fs.promises.writeFile('./HANDS\ ON\ LAB/./archivoFechaYHora.txt', fechaActual, 'utf-8');
+    try {
+        await fs.promises.writeFile('./HANDS\ ON\ LAB/./archivoFechaYHora.txt', fechaActual, 'utf-8');
 
-    let contenido = await fs.promises.readFile('./HANDS\ ON\ LAB/./archivoFechaYHora.txt', 'utf-8');
-    console.log(contenido)
+        let contenido = await fs.promises.readFile('./HANDS\ ON\ LAB/./archivoFechaYHora.txt', 'utf-8');
+        console.log(contenido)
+    } catch (error) {
+        console.error('no se pudo realizar la accion')
+    }
+  
 
 };
 
