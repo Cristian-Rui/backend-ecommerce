@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "" 
+    "dev": ""
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,9 @@
     "url": "https://github.com/Cristian-Rui/backend-ecommerce/issues"
   },
   "homepage": "https://github.com/Cristian-Rui/backend-ecommerce#readme",
-  "dependencies": {},
+  "dependencies": {
+    "luxon": "^3.4.4"
+  },
   "devDependencies": {
     "nodemon": "^3.0.1"
   }
