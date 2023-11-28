@@ -1,0 +1,23 @@
+{
+  "name": "backend-ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cristian-Rui/backend-ecommerce.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cristian-Rui/backend-ecommerce/issues"
+  },
+  "homepage": "https://github.com/Cristian-Rui/backend-ecommerce#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
