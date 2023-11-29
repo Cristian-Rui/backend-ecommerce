@@ -1,4 +1,4 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
 class ProductManager {
     constructor(path) {
@@ -10,6 +10,17 @@ class ProductManager {
 
 
     //METODOS
+
+    // VERIFICO SI EXISTE EL ARCHIVO PARA ELIMINARLO Y ASI EVITO QUE SE REPITAN LOS PRODUCTOS DENTRO DEL ARCHIVO.
+    async reloadClean() {
+        const fileExists = await fs.promises.access(this.path)
+            .then(() => true)
+            .catch(() => false);
+
+        if (fileExists) {
+            await fs.promises.unlink(this.path);
+        }
+    }
 
     async addProduct(title, description, price, thumbnail, code, stock) {
         //VALIDACION CAMPOS OBLIGATTORIOS
@@ -39,14 +50,7 @@ class ProductManager {
 
             this.products.push(product);
 
-            // VERIFICO SI EXISTE EL ARCHIVO PARA ELIMINARLO Y ASI EVITO QUE SE REPITAN LOS PRODUCTOS DENTRO DEL ARCHIVO.
-            const fileExists = await fs.promises.access(this.path)
-                .then(() => true)
-                .catch(() => false);
-
-            if (fileExists) {
-                await fs.promises.unlink(this.path);
-            }
+            await this.reloadClean();
 
             await fs.promises.writeFile(this.path, JSON.stringify(this.products), 'utf-8');
 
@@ -74,28 +78,35 @@ class ProductManager {
         if (!productExists) {
             console.error('Not found')
         } else {
-            return console.log(productExists);
+            return productExists;
         }
     }
 
     async updateProduct(idProduct, productToUpdate) {
-        const searchProduct = await this.getProductById(idProduct)
+        const searchProduct = await this.getProductById(idProduct);
         const update = {
             ...searchProduct,
             ...productToUpdate,
-            idProduct
+            id: idProduct
         }
-        await this.deleteProduct(idProduct)
-        this.products.push(update)
 
-        
+        await this.deleteProduct(idProduct);
+        this.products.push(update);
 
+        await this.reloadClean();
+        await fs.promises.writeFile(this.path, JSON.stringify(this.products), 'utf-8');
 
     }
 
     async deleteProduct(idProduct) {
-        const productList = await this.getProducts();
-        const productDelete = products.filter(product => product.id !== idProduct);
+        try {
+            const productList = await this.getProducts();
+            const productDelete = this.products.filter(product => product.id !== idProduct);
+            await this.reloadClean();
+            await fs.promises.writeFile(this.path, JSON.stringify(productDelete), 'utf-8');
+        } catch (error) {
+            console.error('no se encontro el producto');
+        }
     }
 
 
@@ -103,11 +114,22 @@ class ProductManager {
 
 const test = async () => {
     const productManager = new ProductManager('./desafios\ entregables/./desafioEntregable2/ProductFile.json');
-    const data = await productManager.getProducts();
-    console.log(data)
+    //let data = await productManager.getProducts();
+    //console.log(data);
 
-    await productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc123', 25);
+    //await productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc123', 25);
+    //data = await productManager.getProducts();
+    //console.log(data);
 
-    const productId = await productManager.getProductById(1000000);
+    // data = await productManager.getProductById(1000000);
+    // console.log(data);
+
+    //await productManager.updateProduct(1000000, { title: 'nombre cambiado 2', price: 5000 })
+
+    // await productManager.deleteProduct(1000001);
+
+    //await productManager.deleteProduct(1000000);
+    //console.log(data);
+
 }
 test();
