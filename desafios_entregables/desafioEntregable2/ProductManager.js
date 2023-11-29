@@ -22,25 +22,25 @@ class ProductManager {
         }
     }
 
-    async addProduct(title, description, price, thumbnail, code, stock) {
+    async addProduct(product) {
         //VALIDACION CAMPOS OBLIGATTORIOS
         try {
-            if (!title || !description || !price || !thumbnail || !code || !stock) {
+            if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
                 console.error('Todos los campos son obligatorios.');
                 return;
             }
 
-            const product = {
+            const newProduct = {
                 id: ProductManager.id,
-                title,
-                description,
-                price,
-                thumbnail,
-                code,
-                stock
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                thumbnail: product.thumbnail,
+                code: product.code,
+                stock: product.stock
             }
 
-            const productExists = this.products.find(p => p.code === product.code);
+            const productExists = this.products.find(p => p.code === newProduct.code);
             if (productExists) {
                 console.error('El código del producto ya está en uso.');
                 return;
@@ -48,7 +48,7 @@ class ProductManager {
 
             ProductManager.id++
 
-            this.products.push(product);
+            this.products.push(newProduct);
 
             await this.reloadClean();
 
@@ -99,34 +99,44 @@ class ProductManager {
     }
 
     async deleteProduct(idProduct) {
-        try {
-            const productList = await this.getProducts();
-            const productDelete = this.products.filter(product => product.id !== idProduct);
-            await this.reloadClean();
-            await fs.promises.writeFile(this.path, JSON.stringify(productDelete), 'utf-8');
-        } catch (error) {
-            console.error('no se encontro el producto');
+
+        const productList = await this.getProducts();
+
+        const productToDelete = productList.find(p => p.id === idProduct);
+        if (!productToDelete) {
+            return console.error(`No se encontró ningún producto con el ID ${idProduct}`);
         }
+
+        const productDelete = productList.filter(p => p.id !== idProduct);
+        await this.reloadClean();
+        await fs.promises.writeFile(this.path, JSON.stringify(productDelete), 'utf-8');
     }
-
-
 }
 
 const test = async () => {
-    const productManager = new ProductManager('./desafios\ entregables/./desafioEntregable2/ProductFile.json');
-    //let data = await productManager.getProducts();
-    //console.log(data);
+    const productManager = new ProductManager('./desafios_entregables/desafioEntregable2/ProductFile.json');
+    let data = await productManager.getProducts();
+    console.log(data);
 
-    //await productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc123', 25);
+    const producto1 = {
+        title: 'producto prueba',
+        description: 'Este es un producto prueba',
+        price: 200,
+        thumbnail: 'Sin imagen',
+        code: 'abc123',
+        stock: 25
+    }
+
+    //await productManager.addProduct(producto1);
     //data = await productManager.getProducts();
     //console.log(data);
 
-    // data = await productManager.getProductById(1000000);
-    // console.log(data);
+    //data = await productManager.getProductById(1000000);
+    //console.log('este es el prod by Id', data);
 
     //await productManager.updateProduct(1000000, { title: 'nombre cambiado 2', price: 5000 })
 
-    // await productManager.deleteProduct(1000001);
+    //await productManager.deleteProduct(1000000);
 
     //await productManager.deleteProduct(1000000);
     //console.log(data);
