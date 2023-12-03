@@ -1,4 +1,4 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
 class UserManager {
     constructor(path) {
@@ -28,7 +28,7 @@ class UserManager {
 }
 
 const test = async () => {
-    const userManager = new UserManager('./HANDS\ ON\ LAB/./Usuarios.json');
+    const userManager = new UserManager('./HANDS_ON_LAB/Usuarios.json');
 
     const user1 = {
         nombre: 'cristian',

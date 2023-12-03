@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { DateTime } = require("luxon");
+import * as fs from 'fs';
+import { DateTime } from "luxon";
 
 const fechaActual = DateTime.now().toLocaleString(DateTime.DATETIME_MED);
 
@@ -23,14 +23,13 @@ const fechaActual = DateTime.now().toLocaleString(DateTime.DATETIME_MED);
 //ESTO ES CON ASYNC/AWAIT
 const escribirYLeerArchivo = async () => {
     try {
-        await fs.promises.writeFile('./HANDS\ ON\ LAB/./archivoFechaYHora.txt', fechaActual, 'utf-8');
+        await fs.promises.writeFile('./HANDS_ON_LAB/archivoFechaYHora.txt', fechaActual, 'utf-8');
 
-        let contenido = await fs.promises.readFile('./HANDS\ ON\ LAB/./archivoFechaYHora.txt', 'utf-8');
+        let contenido = await fs.promises.readFile('./HANDS_ON_LAB/archivoFechaYHora.txt', 'utf-8');
         console.log(contenido)
     } catch (error) {
         console.error('no se pudo realizar la accion')
     }
-  
 
 };
 

@@ -76,10 +76,11 @@ class ProductManager {
         const productExists = productsList.find(p => p.id === idProduct);
 
         if (!productExists) {
-            console.error('Not found')
-        } else {
-            return productExists;
+            return console.error('Not found')
         }
+        
+        return productExists;
+
     }
 
     async updateProduct(idProduct, productToUpdate) {
@@ -90,7 +91,7 @@ class ProductManager {
             id: idProduct
         }
 
-        await this.deleteProduct(idProduct);
+        //await this.deleteProduct(idProduct);
         this.products.push(update);
 
         await this.reloadClean();
