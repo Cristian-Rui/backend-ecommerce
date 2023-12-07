@@ -21,7 +21,7 @@ app.get('/products', async (req, res) => {
     };
 
     const limitedList = productList.splice(0, limit);
-    return res.send({limitedList});
+    return res.send({ limitedList });
 
 })
 
@@ -29,11 +29,13 @@ app.get('/products/:pid', async (req, res) => {
     const { pid } = req.params;
 
     const productById = await productManager.getProductById(parseInt(pid));
-    if(!productById){
-        return res.send({error: 'el producto no existe'})
+
+    if (!productById) {
+        return res.send({ error: 'el producto no existe' })
     }
-    res.send({productById})
-} )
+
+    res.send({ productById })
+})
 
 
 
