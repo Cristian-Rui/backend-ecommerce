@@ -1,0 +1,24 @@
+<div>
+    <h1>USUARIO: {{user.name}} {{user.lastName}}</h1>
+    <ul>
+        <li>Nombre: {{user.name}}</li>
+        <li>apellido: {{user.lastName}}</li>
+        <li>edad: {{user.age}}</li>
+        <li>email: {{user.email}}</li>
+        <li>telefono: {{user.phone}}</li>
+        <li>rol: {{user.role}}</li>
+    </ul>
+    {{#if user.isAdmin}}
+    <h1 style="color: green;">ES ADMIN</h1>
+    <ul>
+        {{#each food}}
+            <li>comida: {{this.name}}, 
+            precio: {{this.price}}</li>
+        {{/each}}
+    </ul>
+    <p></p>
+    {{else}}
+    <h1 style="color: red">NO ES ADMIN</h1>
+    <p>no tienes acceso al listado de comidas</p>
+    {{/if}}
+</div>
